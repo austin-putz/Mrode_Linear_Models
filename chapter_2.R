@@ -1,17 +1,24 @@
 #==============================================================================#
-# Chapter 2 Genetic Covariance Between Relatives
+# Chapter 2: Genetic Covariance Between Relatives
 #==============================================================================#
 
 #----------------------------------------#
-# license (not that it's really needed)
+# Description
 #----------------------------------------#
 
-# License: GPLv3 or later
+# Raphael A. Mrode
+# Linear Models for the Prediction of Animal Breeding Values
+
+# Author:   Austin Putz <putz[dot]austin[at]gmail[dot]com>
+# Created:  Unknown
+# Modified: 2015-07-22
+# License:  GPLv3 or later
 
 #----------------------------------------#
 # install packages
 #----------------------------------------#
 
+# install pedigreemm if not yet installed
   if (!("pedigreemm" %in% as.character(as.matrix(installed.packages())[, 1]))) install.packages("pedigreemm")
 
 #----------------------------------------#
