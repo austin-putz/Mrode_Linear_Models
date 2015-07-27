@@ -47,9 +47,9 @@
 	print(ped.edit)
 
 # pedigree() function to create pedigree S4 object
-	ped.complete <- pedigree(sire= ped.edit $sire, 
-							dam= ped.edit $dam, 
-							label= ped.edit $label)
+	ped.complete <- pedigree(sire= ped.edit$sire, 
+							dam= ped.edit$dam, 
+							label= ped.edit$label)
 	print(ped.complete)
 
 # create A matrix (3rd ed, page 23)
@@ -66,7 +66,7 @@
 	print(inbred.coefs)
 
 # D matrix for the A = TDT' equation
-	Dmat(ped.complete)
+	diag(Dmat(ped.complete))
 
 # L' matrix (3rd ed, page 29)
 	relfactor(ped.complete)
