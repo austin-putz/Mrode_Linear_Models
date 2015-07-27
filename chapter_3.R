@@ -12,15 +12,15 @@
 
 # Author:   Austin Putz <putz[dot]austin[at]gmail[dot]com>
 # Created:  Unknown
-# Modified: 2015-07-22
+# Modified: 2015-07-27
 # License:  GPLv2
 
 #------------------------------------------------------------------------------#
 # Libraries and functions
 #------------------------------------------------------------------------------#
 
-# createA function (Goto's)
-  source("/Users/austinputz/Documents/Animal_Breeding/Mrode_Examples/functions.R")
+# createA function (Make sure to change path for your computer)
+  source("/Users/austinputz/Documents/Programming/R/Animal_Breeding/Gota_Morota/Pedigrees/createA.R")
 # Please download Gota's functions from his website
 # http://morotalab.org/Mrode2005/relmat/relmat.html
 
@@ -86,7 +86,25 @@
   ped.3.1 <- data.frame(calf, sire, dam)
   ped.3.1
   rm(list=c("calf","sire","dam"))
+  
+  ped.3.1$sire[ped.3.1$sire == 0] <- NA
+  ped.3.1$dam[ped.3.1$dam == 0] <- NA
+  
+# editPed() to add parents to top of pedigree
+	ped.edit <- editPed(sire=ped.3.1$sire, dam=ped.3.1$dam, label=ped.3.1$calf)
+	print(ped.edit)
 
+# pedigree() function to create pedigree S4 object
+	ped.complete <- pedigree(sire= ped.edit$sire, 
+							dam= ped.edit$dam, 
+							label= ped.edit$label)
+	print(ped.complete)
+
+# create A matrix (3rd ed, page 23)
+# uses the matrix package, thus the "."s
+	A     <- getA(ped.complete)
+	print(A)
+	
 # create A matrix
   A <- createA(ped.3.1)
   A
@@ -177,8 +195,8 @@
 
 # get solutions (page 39)
   sol.names          <- as.matrix(c("Female", "Male", "An_1_BV", "An_2_BV", "An_3_BV", 
-                                    "An_4_BV", "An_5_BV", "An_6_BV", "An_7_BV", "An_8 _BV" ), ncol=1)
-  sols               <- as.matrix(round(output.3.1$solutions, 3), ncol=1)
+                                    "An_4_BV", "An_5_BV", "An_6_BV", "An_7_BV", "An_8_BV" ), ncol=1)
+  sols               <- as.matrix(round(output.3.1$solutions, 3))
   row.names(sols)    <- NULL
   solutions          <- as.data.frame(cbind(sol.names, sols))
   names(solutions)   <- c("Effect", "Solution")
@@ -207,7 +225,7 @@
 
 # elements to make table on page 45
   animal    <- 1:8
-  diagonals <- diag(LHS.inv[3:10,3:10])  # don't take fixed diagonals
+  diagonals <- diag(LHS.inv[3:10, 3:10])  # don't take fixed diagonals
   r2        <- 1 - (diagonals * alpha)
   r         <- sqrt(r2)
   SEP       <- sqrt(diagonals * sigmaE)
