@@ -19,7 +19,9 @@
 #------------------------------------------------------------------------------#
 
 # install pedigreemm if not yet installed
-  if (!("pedigreemm" %in% as.character(as.matrix(installed.packages())[, 1]))) install.packages("pedigreemm")
+  if (!("pedigreemm" %in% as.character(as.matrix(installed.packages())[, 1]))){
+	  install.packages("pedigreemm")
+  }
 
 #------------------------------------------------------------------------------#
 # libraries
