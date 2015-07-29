@@ -12,17 +12,15 @@
 
 # Author:   Austin Putz <putz[dot]austin[at]gmail[dot]com>
 # Created:  Unknown
-# Modified: 2015-07-27
+# Modified: 2015-07-29
 # License:  GPLv2
 
 #------------------------------------------------------------------------------#
 # Libraries and functions
 #------------------------------------------------------------------------------#
 
-# createA function (Make sure to change path for your computer)
-  source("/Users/austinputz/Documents/Programming/R/Animal_Breeding/Gota_Morota/Pedigrees/createA.R")
-# Please download Gota's functions from his website
-# http://morotalab.org/Mrode2005/relmat/relmat.html
+# pedigreemm
+  library(pedigreemm)
 
 #------------------------------------------------------------------------------#
 # Basic model
@@ -81,34 +79,28 @@
 
 # set up pedigree
   calf    <- c(1:8)
-  sire    <- c(0, 0, 0, 1, 3, 1, 4, 3)
-  dam     <- c(0, 0, 0, 0, 2, 2, 5, 6)
+  sire    <- c(NA, NA, 0, 1, 3, 1, 4, 3)
+  dam     <- c(NA, NA, NA, NA, 2, 2, 5, 6)
   ped.3.1 <- data.frame(calf, sire, dam)
   ped.3.1
   rm(list=c("calf","sire","dam"))
   
-  ped.3.1$sire[ped.3.1$sire == 0] <- NA
-  ped.3.1$dam[ped.3.1$dam == 0] <- NA
-  
 # editPed() to add parents to top of pedigree
-	ped.edit <- editPed(sire=ped.3.1$sire, dam=ped.3.1$dam, label=ped.3.1$calf)
-	print(ped.edit)
+  ped.edit <- editPed(sire=ped.3.1$sire, 
+                      dam=ped.3.1$dam, 
+                      label=ped.3.1$calf)
+  print(ped.edit)
 
 # pedigree() function to create pedigree S4 object
-	ped.complete <- pedigree(sire= ped.edit$sire, 
-							dam= ped.edit$dam, 
-							label= ped.edit$label)
-	print(ped.complete)
+  ped.complete <- pedigree(sire= ped.edit$sire, 
+                           dam= ped.edit$dam, 
+                           label= ped.edit$label)
+  print(ped.complete)
 
-# create A matrix (3rd ed, page 23)
-# uses the matrix package, thus the "."s
-	A     <- getA(ped.complete)
-	print(A)
-	
-# create A matrix
-  A <- createA(ped.3.1)
-  A
-
+# create A matrix (3rd ed, page 23) (uses the matrix package, thus the "."s)
+  A <- getA(ped.complete)
+  print(A)
+  
 # A inverse
   round(solve(A), 3)
 
@@ -152,22 +144,29 @@
 # set up MME for PE solutions
   basicMME <- function(X, Z, A, y, alpha) {
     
+	# Calculate blocks of LHS
     XpX = crossprod(X)
     ZpZ = crossprod(Z) + (solve(A) * alpha)
     XpZ = crossprod(X, Z)
     
+	# Paste top and bottom together for LHS
     toprow    = cbind(XpX,    XpZ)
     bottomrow = cbind(t(XpZ), ZpZ)
     
+	# Put top and bottom together for left hand side (LHS)
     LHS = rbind(toprow, bottomrow)
     
+	# Elements for RHS
     XpY = crossprod(X, y)
     ZpY = crossprod(Z, y)
     
+	# Calculate right hand side (RHS)
     RHS = rbind(XpY, ZpY) 
     
+	# calculate solutions by direct inversion of LHS
     solutions = solve(LHS) %*% RHS
     
+	# Return LHS, RHS, and solutions
     return(list(LHS=LHS, RHS=RHS, solutions=solutions))
     
   }
@@ -213,10 +212,8 @@
   YDs
 
 #----------------------------------------#
-# Accuracy
+# Accuracy (3rd ed, page 44)
 #----------------------------------------#
-
-# page 44
 
 # PEV = C22.inv * sigmaE
 # SEP = sqrt(PEV)
