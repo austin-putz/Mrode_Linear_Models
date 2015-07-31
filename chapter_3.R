@@ -12,12 +12,17 @@
 
 # Author:   Austin Putz <putz[dot]austin[at]gmail[dot]com>
 # Created:  Unknown
-# Modified: 2015-07-29
+# Modified: 2015-07-31
 # License:  GPLv2
 
 #------------------------------------------------------------------------------#
 # Libraries and functions
 #------------------------------------------------------------------------------#
+
+# install pedigreemm if not yet installed
+  if (!("pedigreemm" %in% as.character(as.matrix(installed.packages())[, 1]))){
+	  install.packages("pedigreemm")
+  }
 
 # pedigreemm
   library(pedigreemm)
@@ -79,7 +84,7 @@
 
 # set up pedigree
   calf    <- c(1:8)
-  sire    <- c(NA, NA, 0, 1, 3, 1, 4, 3)
+  sire    <- c(NA, NA, NA, 1, 3, 1, 4, 3)
   dam     <- c(NA, NA, NA, NA, 2, 2, 5, 6)
   ped.3.1 <- data.frame(calf, sire, dam)
   ped.3.1
