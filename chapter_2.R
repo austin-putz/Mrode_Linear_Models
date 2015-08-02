@@ -13,7 +13,6 @@
 # Created:  Unknown
 # Modified: 2015-07-31
 # License:  GPLv2
-# Added a new line
 
 #------------------------------------------------------------------------------#
 # install packages
