@@ -11,7 +11,7 @@
 
 # Author:   Austin Putz <putz[dot]austin[at]gmail[dot]com>
 # Created:  2015-08-02
-# Modified: 2015-08-02
+# Modified: 2015-08-03
 # License:  GPLv2
 
 #------------------------------------------------------------------------------#
