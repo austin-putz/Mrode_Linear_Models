@@ -47,8 +47,8 @@
 # MME (assuming homogeneous variance)
 # Simplifies to:
 
-# | X'X         X'Z       | b | = X'y
-# | Z'X   Z'Z + A-1*alpha | a | = Z'y
+# | X'X         X'Z       | b | = | X'y |
+# | Z'X   Z'Z + A-1*alpha | a | = | Z'y |
 
 #------------------------------------------------------------------------------#
 # Example 3.1
@@ -63,10 +63,9 @@
 #----------------------------------------#
 
 # given parameters (page 37)
-  sigmaE <- 40
-  sigmaA <- 20
-  alpha  <- sigmaE / sigmaA
-  alpha
+  sigmaE <- 40; sigmaE
+  sigmaA <- 20; sigmaA
+  alpha  <- sigmaE / sigmaA; alpha
 
 # Data (page 37)
   calf   <- c(4:8)
@@ -75,7 +74,7 @@
 
 # Dataframe
   data.3.1 <- data.frame(calf, sex, WWG)
-  data.3.1
+  print(data.3.1)
   rm(list=(c("calf", "sex", "WWG")))
 
 #----------------------------------------#
@@ -87,7 +86,7 @@
   sire    <- c(NA, NA, NA, 1, 3, 1, 4, 3)
   dam     <- c(NA, NA, NA, NA, 2, 2, 5, 6)
   ped.3.1 <- data.frame(calf, sire, dam)
-  ped.3.1
+  print(ped.3.1)
   rm(list=c("calf","sire","dam"))
   
 # editPed() to add parents to top of pedigree
@@ -117,10 +116,13 @@
   X <- with(data.3.1, model.matrix(WWG ~ sex - 1))
   print(X)
 
+# NOTE: X'X  can be  X %*% t(X)  OR  crossprod(X)
+# crossprod function is slightly faster
+
 # view X'X
   crossprod(X)
 
-# set up Z
+# set up Z (n by n*) n* = number of animals in whole pedigree (8)
   Z <- matrix(0, nrow=nrow(data.3.1), ncol=nrow(ped.3.1))
 
 # fill in Z
@@ -214,7 +216,7 @@
 
 # get Yield Deviations (YD) (page 40); YD = RESIDUAL = Y - Y_hat because they only have 1 observation
   YDs <- solve(crossprod(Z[1:5, 4:8])) %*% t(Z[1:5, 4:8]) %*% as.matrix(data.3.1$WWG - (X %*% matrix(solutions[1:2, 2])))
-  YDs
+  print(YDs)
 
 #----------------------------------------#
 # Accuracy (3rd ed, page 44)
@@ -237,12 +239,12 @@
   rm(list=c("animal", "diagonals", "r2", "r", "SEP"))
   round(accuracy.tab, 3)
 
-# remove everything for next example
-  rm(list=ls())
-
 #------------------------------------------------------------------------------#
 # 3.2: Sire Model
 #------------------------------------------------------------------------------#
+
+# remove everything for next example
+  rm(list=ls())
 
 #####################################
 # Caution: Work in progess
