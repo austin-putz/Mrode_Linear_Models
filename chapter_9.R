@@ -1,14 +1,14 @@
 #==============================================================================#
 # Mrode: Chapter 9
 #==============================================================================#
-
+  
 # Remove all
   rm(list=ls())
-
+  
 #------------------------------------------------------------------------------#
 # Set inputs
 #------------------------------------------------------------------------------#
-
+  
 # read in functions for M and Phi matrix
   source(paste0("~/Documents/Programming/R/Animal_Breeding/",
                 "Gota_Morota/RandomRegression/legendre.R"))
@@ -20,7 +20,7 @@
 #==============================================================================#
 # Mrode: Section 9.2
 #==============================================================================#
-
+  
 #------------------------------------------------------------------------------#
 # Data
 #------------------------------------------------------------------------------#
@@ -117,6 +117,9 @@
   X1 <- model.matrix(y ~ -1 + DIM, data=data.leg)
   X1 <- X1[, c(1:9)]
   X2 <- model.matrix(y ~ -1 + V1+V2+V3+V4+V5, data=data.leg)
+  
+  X2.mrode <- read.table("~/Documents/Programming/R/Animal_Breeding/Mrode/tpolymat.txt")
+  X2.mrode <- 
   
 # Enter his X2 matrix
   X2pX2.book <- matrix(c(20.9996, -4.4261, 4.0568, -0.8441, 8.7149,
@@ -258,6 +261,8 @@
                 "Gota_Morota/RandomRegression/stdtime.R"))
   source(paste0("~/Documents/Programming/R/Animal_Breeding/",
                 "Gota_Morota/Pedigrees/createA.R"))
+
+  library(ggplot2)
   
 #------------------------------------------------------------------------------#
 # Data
@@ -494,7 +499,8 @@
   data.gen.pe <- data.frame(x=c(4,38,72,106,140,174,208,242,276,310),
                         gen.var=diag(covar.gen),
                         pe.var =diag(covar.pe))
-  
+ 
+# melt data together to plot it
   data.gen.pe.melt <- data.gen.pe %>% gather(Type, Value, gen.var:pe.var)
   
 # plot bv variances (on diagonal)
@@ -502,7 +508,11 @@
     geom_line() +
     geom_point()
   
-
+#----------------------------------------#
+# recreate the DIM tragectory
+#----------------------------------------#
+  
+  plot(M %*%  b2, x=unique(data$DIM))
   
 #----------------------------------------#
 # new Phi matrix
